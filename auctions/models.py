@@ -22,7 +22,7 @@ class Auction(models.Model):
     active = models.BooleanField()
 
     def __str__(self):
-        return f"{self.id} : {self.user.username} bid {self.starting_price} on {self.myproduct.name} at {self.date}"
+        return f"{self.id} | {self.title} | {self.user.username} | {self.starting_price}  "
 
 
 class Bid(models.Model):

@@ -58,7 +58,7 @@ def detail(request, id):
         'item': item,
         'bids': bids,
         'comments': comments,
-        'bid': bid
+        'bid': bid,
     })
 
 
@@ -110,7 +110,7 @@ def bid(request, id):
             value = 0
         if float(bid_price) < myproduct.starting_price or float(bid_price) <= value:
             messages.warning(
-                request, f'Bid Higher than: {max(value, myproduct.starting_price)}!')
+                request, f'Bid must be higher than: ${max(value, myproduct.starting_price)}!')
             return HttpResponseRedirect(reverse("detail", kwargs={'id': id}))
         user = request.user
         bid = Bid.objects.create(
@@ -140,8 +140,8 @@ def newproduct(request):
 
 
 @login_required
-def close(request, itemId):
-    myproduct = Auction.objects.get(id=itemId)
+def close(request, itemID):
+    myproduct = Auction.objects.get(id=itemID)
     user = request.user
     if myproduct.user == user:
         myproduct.active = False
@@ -155,10 +155,10 @@ def close(request, itemId):
 
 
 @login_required
-def watchlist(request):
+def watchlist(request, pk):
     if request.method == 'POST':
         user = request.user      
-        myproduct = Auction.objects.get(id=request.POST["item"])
+        myproduct = Auction.objects.get(id=pk)
         if request.POST["status"] == '1':
             user.watchlist.add(myproduct)
         else:
